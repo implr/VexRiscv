@@ -25,8 +25,8 @@ load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
 protobuf_deps()
 
 
-rules_scala_version="3b51ba7f74cd7f068b17df89043c2f0a796a3e21" # update this as needed
-rules_scala_version_sha256="1c3d234909bc5592bd64c7da1cf439eeb09e3d825a593c14f02a6dc71cfee124"
+rules_scala_version="67a7ac178a73d1d5ff4c2b0663a8eda6dfcbbc56"
+rules_scala_version_sha256="95054009fd938ac7ef53a20619f94a5408d8ae74eb5b318cd150a3ecb1a6086f"
 
 http_archive(
     name = "io_bazel_rules_scala",
@@ -36,11 +36,8 @@ http_archive(
     sha256 = rules_scala_version_sha256,
 )
 
-#load("@io_bazel_rules_scala//:version.bzl", "bazel_version")
-#bazel_version(name = "bazel_version")
-
-load("@io_bazel_rules_scala//scala:toolchains.bzl", "scala_register_toolchains")
-scala_register_toolchains()
+load("@io_bazel_rules_scala//:scala_config.bzl", "scala_config")
+scala_config(scala_version = "2.11.12")
 
 load("@io_bazel_rules_scala//scala:scala.bzl", "scala_repositories")
 scala_repositories((
@@ -52,6 +49,8 @@ scala_repositories((
     }
 ))
 
+load("@io_bazel_rules_scala//scala:toolchains.bzl", "scala_register_toolchains")
+scala_register_toolchains()
 
 RULES_JVM_EXTERNAL_TAG = "3.0"
 RULES_JVM_EXTERNAL_SHA = "62133c125bf4109dfd9d2af64830208356ce4ef8b165a6ef15bbff7460b35c3a"
@@ -79,13 +78,18 @@ maven_install(
             "commons-io:commons-io:2.5",
             "org.yaml:snakeyaml:1.8",
             "com.github.oshi:oshi-core:3.4.0",
+            "net.openhft:affinity:3.1.11",
+            "org.slf4j:slf4j-simple:1.7.25",
+            "com.github.scopt:scopt_2.11:3.4.0",
+            "net.liftweb:lift-json_2.11:3.1.0-M2",
+            "com.github.purejavacomm:purejavacomm:1.0.2.RELEASE",
         ],
     repositories = [
         "https://maven.google.com",
         "https://repo1.maven.org/maven2/",
         "https://oss.sonatype.org/content/repositories/snapshots",
         ],
-    maven_install_json = "//:maven_install.json",
+    #maven_install_json = "//:maven_install.json",
     excluded_artifacts = [
         "com.github.dblock:oshi-core",
     ],
